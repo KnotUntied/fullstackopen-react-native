@@ -8,8 +8,8 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: theme.colors.textPrimary,
     color: 'white',
-    padding: 12,
-    paddingTop: 12 + Constants.statusBarHeight,
+    padding: 24,
+    paddingTop: 24 + Constants.statusBarHeight,
     // ...
   },
   // ...

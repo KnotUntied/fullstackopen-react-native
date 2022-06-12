@@ -1,16 +1,80 @@
-import { View } from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
 import Text from './Text';
+
+import theme from '../theme';
+
+const styles = StyleSheet.create({
+  image: {
+    borderRadius: 4,
+    marginRight: 24,
+    width: 48,
+    height: 48,
+  },
+  language: {
+    backgroundColor: theme.colors.primary,
+    padding: 6,
+    borderRadius: 4,
+    color: 'white',
+    flexShrink: 1,
+    flexGrow: 0,
+    alignSelf: 'flex-start'
+  },
+  rowContainer: {
+    flexDirection: 'row',
+  },
+  container: {
+    flexDirection: 'column',
+    flexGrow: 1,
+    flexShrink: 1,
+    marginBottom: 8,
+  },
+  item: {
+    backgroundColor: 'white',
+    padding: 24,
+  },
+  stat: {
+    textAlign: 'center'
+  },
+  elem: {
+    marginBottom: 8,
+  }
+});
+
+const RepositoryStat = ({ value, label }) => {
+  return (
+    <View style={styles.container}>
+      <Text style={[styles.elem, styles.stat]} fontWeight="bold">
+        {
+          value >= 1000
+          ? `${(value / 1000).toFixed(1)}k`
+          : value
+        }
+      </Text>
+      <Text style={styles.stat} color="textSecondary">{label}</Text>
+    </View>
+  );
+};
 
 const RepositoryItem = ({ item }) => {
   return (
-    <View>
-      <Text>Full name: {item.fullName}</Text>
-      <Text>Description: {item.description}</Text>
-      <Text>Language: {item.language}</Text>
-      <Text>Stars: {item.stargazersCount}</Text>
-      <Text>Forks: {item.forksCount}</Text>
-      <Text>Reviews: {item.reviewCount}</Text>
-      <Text>Rating: {item.ratingAverage}</Text>
+    <View style={styles.item}>
+      <View style={styles.rowContainer}>
+        <Image
+          style={styles.image}
+          source={{ uri: item.ownerAvatarUrl }}
+        />
+        <View style={styles.container}>
+          <Text style={styles.elem} fontWeight="bold">{item.fullName}</Text>
+          <Text style={styles.elem} color="textSecondary">{item.description}</Text>
+          <Text style={[styles.elem, styles.language]}>{item.language}</Text>
+        </View>
+      </View>
+      <View style={styles.rowContainer}>
+        <RepositoryStat value={item.stargazersCount} label="Stars"/>
+        <RepositoryStat value={item.forksCount} label="Forks"/>
+        <RepositoryStat value={item.reviewCount} label="Reviews"/>
+        <RepositoryStat value={item.ratingAverage} label="Rating"/>
+      </View>
     </View>
   );
 };
