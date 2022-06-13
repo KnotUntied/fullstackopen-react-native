@@ -9,13 +9,13 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: theme.colors.textPrimary,
     color: 'white',
-    padding: 24,
-    paddingTop: 24 + Constants.statusBarHeight,
+    padding: 16,
+    paddingTop: 16 + Constants.statusBarHeight,
     flexDirection: 'row',
   },
   tab: {
     color: 'white',
-    marginRight: 24,
+    marginRight: 16,
   },
 });
 

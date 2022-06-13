@@ -6,9 +6,9 @@ import theme from '../theme';
 const styles = StyleSheet.create({
   image: {
     borderRadius: 4,
-    marginRight: 24,
-    width: 48,
-    height: 48,
+    marginRight: 16,
+    width: 32,
+    height: 32,
   },
   language: {
     backgroundColor: theme.colors.primary,
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
   },
   item: {
     backgroundColor: 'white',
-    padding: 24,
+    padding: 16,
   },
   stat: {
     textAlign: 'center'
