@@ -5,6 +5,7 @@ import FormikTextInput from './FormikTextInput';
 import * as yup from 'yup';
 
 import useSignIn from '../hooks/useSignIn';
+import AuthStorage from '../utils/authStorage';
 
 import theme from '../theme';
 
@@ -77,10 +78,11 @@ const SignIn = () => {
 
   const onSubmit = async (values) => {
     const { username, password } = values;
+    const auth = new AuthStorage('rate-repository-app');
 
     try {
       const { data } = await signIn({ username, password });
-      console.log(data);
+      auth.setAccessToken(data.authenticate.accessToken);
     } catch (e) {
       console.log(e);
     }
