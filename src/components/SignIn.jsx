@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { Formik, useField } from 'formik';
 import Text from './Text';
@@ -5,7 +6,6 @@ import FormikTextInput from './FormikTextInput';
 import * as yup from 'yup';
 
 import useSignIn from '../hooks/useSignIn';
-import AuthStorage from '../utils/authStorage';
 
 import theme from '../theme';
 
@@ -74,15 +74,15 @@ const SignInForm = ({ onSubmit }) => {
 };
 
 const SignIn = () => {
+  const navigate = useNavigate();
   const [signIn] = useSignIn();
 
   const onSubmit = async (values) => {
     const { username, password } = values;
-    const auth = new AuthStorage('rate-repository-app');
 
     try {
-      const { data } = await signIn({ username, password });
-      auth.setAccessToken(data.authenticate.accessToken);
+      await signIn({ username, password });
+      navigate('/', { replace: true });
     } catch (e) {
       console.log(e);
     }
