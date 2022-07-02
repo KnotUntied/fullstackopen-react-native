@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
 
 const RepositoryStat = ({ value, label }) => {
   return (
-    <View style={styles.container}>
+    <View style={styles.container} testID={label}>
       <Text style={[styles.elem, styles.stat]} fontWeight="bold">
         {
           value >= 1000
@@ -57,7 +57,7 @@ const RepositoryStat = ({ value, label }) => {
 
 const RepositoryItem = ({ item }) => {
   return (
-    <View style={styles.item}>
+    <View style={styles.item} testID="repositoryItem">
       <View style={styles.rowContainer}>
         <Image
           style={styles.image}
