@@ -1,9 +1,13 @@
 import { View, ScrollView, StyleSheet } from 'react-native';
 import { Link } from "react-router-native";
+import { useQuery } from '@apollo/client';
 import Text from './Text';
 import Constants from 'expo-constants';
 
 import theme from '../theme';
+
+import useAuthStorage from '../hooks/useAuthStorage';
+import { ME } from '../graphql/queries';
 
 const styles = StyleSheet.create({
   container: {
@@ -30,11 +34,21 @@ const AppBarTab = ({ to, children }) => {
 };
 
 const AppBar = () => {
+  const { loading, error, data } = useQuery(ME, {
+    fetchPolicy: 'network-only',
+  });
+
+  console.log({ loading, error, data });
+
+  const auth = data && data.me
+    ? <AppBarTab to='/logout'>Sign Out</AppBarTab>
+    : <AppBarTab to='/login'>Sign In</AppBarTab>;
+
   return (
     <View style={styles.container}>
       <ScrollView horizontal>
         <AppBarTab to='/'>Repositories</AppBarTab>
-        <AppBarTab to='/login'>Sign In</AppBarTab>
+        {auth}
       </ScrollView>
     </View>
   );
