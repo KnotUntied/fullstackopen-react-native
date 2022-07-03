@@ -66,7 +66,7 @@ const SignInForm = ({ onSubmit }) => {
         secureTextEntry
         style={styles.input}
       />
-      <Pressable onPress={onSubmit}>
+      <Pressable onPress={onSubmit} style={{ zIndex: 0.5 }}>
         <Text style={styles.button} fontWeight='bold'>Sign in</Text>
       </Pressable>
     </View>

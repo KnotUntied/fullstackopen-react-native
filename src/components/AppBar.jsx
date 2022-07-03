@@ -38,8 +38,6 @@ const AppBar = () => {
     fetchPolicy: 'network-only',
   });
 
-  console.log({ loading, error, data });
-
   const auth = data && data.me
     ? <AppBarTab to='/logout'>Sign Out</AppBarTab>
     : <AppBarTab to='/login'>Sign In</AppBarTab>;
