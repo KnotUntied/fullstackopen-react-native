@@ -5,6 +5,7 @@ import AppBar from './AppBar';
 import SingleRepository from './SingleRepository';
 import RepositoryList from './RepositoryList';
 import NewReview from './NewReview';
+import SignUp from './SignUp';
 import SignIn from './SignIn';
 import SignOut from './SignOut';
 import theme from '../theme';
@@ -23,6 +24,7 @@ const Main = () => {
       <AppBar />
       <Routes>
         <Route path="/" element={<RepositoryList />} exact />
+        <Route path="/register" element={<SignUp />} exact />
         <Route path="/login" element={<SignIn />} exact />
         <Route path="/logout" element={<SignOut />} exact />
         <Route path="/repositories/:id" element={<SingleRepository />} />

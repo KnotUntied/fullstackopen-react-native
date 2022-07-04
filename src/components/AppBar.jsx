@@ -39,14 +39,23 @@ const AppBar = () => {
   });
 
   const auth = data && data.me
-    ? <AppBarTab to='/logout'>Sign Out</AppBarTab>
-    : <AppBarTab to='/login'>Sign In</AppBarTab>;
+    ? (
+      <>
+        <AppBarTab to='/new-review'>Create a review</AppBarTab>
+        <AppBarTab to='/logout'>Sign out</AppBarTab>
+      </>
+    )
+    : (
+      <>
+        <AppBarTab to='/login'>Sign in</AppBarTab>
+        <AppBarTab to='/register'>Sign up</AppBarTab>
+      </>
+    );
 
   return (
     <View style={styles.container}>
       <ScrollView horizontal>
         <AppBarTab to='/'>Repositories</AppBarTab>
-        {data && data.me && <AppBarTab to='/new-review'>Create a review</AppBarTab>}
         {auth}
       </ScrollView>
     </View>

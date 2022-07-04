@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { Formik, useField } from 'formik';
@@ -6,15 +5,13 @@ import Text from './Text';
 import FormikTextInput from './FormikTextInput';
 import * as yup from 'yup';
 
-import useCreateReview from '../hooks/useCreateReview';
+import useSignUp from '../hooks/useSignUp';
 
 import theme from '../theme';
 
 const initialValues = {
-  ownerName: '',
-  repositoryName: '',
-  rating: '',
-  text: '',
+  username: '',
+  password: '',
 };
 
 const styles = StyleSheet.create({
@@ -47,89 +44,77 @@ const styles = StyleSheet.create({
 });
 
 const validationSchema = yup.object().shape({
-  ownerName: yup
+  username: yup
     .string()
+    .min(1, 'Username must be between 1 and 30 characters long')
+    .max(30, 'Username must be between 1 and 30 characters long')
     .required('Username is required'),
-  repositoryName: yup
+  password: yup
     .string()
+    .min(5, 'Password must be between 1 and 30 characters long')
+    .max(50, 'Password must be between 1 and 30 characters long')
     .required('Password is required'),
-  rating: yup
-    .number()
-    .required('Rating is required')
-    .integer('Rating must be an integer')
-    .min(0, 'Rating must be between 0 and 100')
-    .max(100, 'Rating must be between 0 and 100'),
-  text: yup
+  repeat: yup
     .string()
-    .optional(),
+    .oneOf([yup.ref('password'), null])
+    .required('Password confirmation is required'),
 });
 
-const NewReviewForm = ({ onSubmit }) => {
+const SignUpForm = ({ onSubmit }) => {
   return (
     <View style={styles.container}>
       <FormikTextInput
-        name="ownerName"
-        placeholder="Repository owner name"
+        name="username"
+        placeholder="Username"
         style={styles.input}
       />
       <FormikTextInput
-        name="repositoryName"
-        placeholder="Repository name"
+        name="password"
+        placeholder="Password"
+        secureTextEntry
         style={styles.input}
       />
       <FormikTextInput
-        name="rating"
-        placeholder="Rating between 0 and 100"
+        name="repeat"
+        placeholder="Password confirmation"
+        secureTextEntry
         style={styles.input}
-        keyboardType="number-pad"
-      />
-      <FormikTextInput
-        name="text"
-        placeholder="Review"
-        style={styles.input}
-        textAlignVertical="top"
-        multiline
       />
       <Pressable onPress={onSubmit} style={{ zIndex: 0.5 }}>
-        <Text style={styles.button} fontWeight='bold'>Create a review</Text>
+        <Text style={styles.button} fontWeight='bold'>Sign up</Text>
       </Pressable>
     </View>
   );
 };
 
-export const NewReviewContainer = ({ onSubmit }) => {
+export const SignUpContainer = ({ onSubmit }) => {
   return (
     <Formik
       initialValues={initialValues}
       onSubmit={onSubmit}
       validationSchema={validationSchema}
     >
-      {({ handleSubmit }) => <NewReviewForm onSubmit={handleSubmit} />}
+      {({ handleSubmit }) => <SignUpForm onSubmit={handleSubmit} />}
     </Formik>
   );
 };
 
-const NewReview = () => {
+const SignUp = () => {
   const navigate = useNavigate();
-  const [createReview, result] = useCreateReview();
-
-  useEffect(() => {
-    if (result.data) {
-      navigate(`/repositories/${result.data.createReview.repositoryId}`, { replace: true });
-    }
-  }, [result.data]) // eslint-disable-line
+  const [signUp] = useSignUp();
 
   const onSubmit = async (values) => {
-    const { ownerName, repositoryName, rating, text } = values;
+    const { username, password } = values;
 
     try {
-      await createReview({ ownerName, repositoryName, rating, text });
+      await signUp({ username, password });
+      navigate('/', { replace: true });
     } catch (e) {
       console.log(e);
     }
   };
 
-  return <NewReviewContainer onSubmit={onSubmit}/>;
+  return <SignUpContainer onSubmit={onSubmit}/>;
 };
 
-export default NewReview;
+export default SignUp;
