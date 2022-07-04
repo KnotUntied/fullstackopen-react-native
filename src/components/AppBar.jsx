@@ -46,6 +46,7 @@ const AppBar = () => {
     <View style={styles.container}>
       <ScrollView horizontal>
         <AppBarTab to='/'>Repositories</AppBarTab>
+        {data && data.me && <AppBarTab to='/new-review'>Create a review</AppBarTab>}
         {auth}
       </ScrollView>
     </View>
