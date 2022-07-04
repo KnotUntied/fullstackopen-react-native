@@ -7,8 +7,8 @@ const styles = StyleSheet.create({
   image: {
     borderRadius: 4,
     marginRight: 16,
-    width: 32,
-    height: 32,
+    width: 48,
+    height: 48,
   },
   language: {
     backgroundColor: theme.colors.primary,
@@ -64,7 +64,7 @@ const RepositoryItem = ({ item }) => {
           source={{ uri: item.ownerAvatarUrl }}
         />
         <View style={styles.container}>
-          <Text style={styles.elem} fontWeight="bold">{item.fullName}</Text>
+          <Text style={styles.elem} fontSize="subheading" fontWeight="bold">{item.fullName}</Text>
           <Text style={styles.elem} color="textSecondary">{item.description}</Text>
           <Text style={[styles.elem, styles.language]}>{item.language}</Text>
         </View>
