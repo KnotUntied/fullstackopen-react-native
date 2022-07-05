@@ -66,7 +66,7 @@ const ItemSeparator = () => <View style={styles.separator} />;
 const RepositoryInfo = ({ repository }) => {
   return (
     <View testID="repositoryInfo">
-      <RepositoryItem item={repository} />
+      {repository && <RepositoryItem item={repository} />}
       <View style={styles.buttonContainer}>
         <Pressable onPress={() => Linking.openURL(repository.url)}>
           <Text style={styles.button} fontWeight="bold">Open in GitHub</Text>
@@ -93,14 +93,12 @@ const ReviewItem = ({ review }) => {
   );
 };
 
-const SingleRepository = () => {
-  const id = useParams().id;
-  const { repository } = useRepository(id);
+export const SingleRepositoryContainer = ({ repository, onEndReach }) => {
   const reviewNodes = repository && repository.reviews
     ? repository.reviews.edges.map(edge => edge.node)
     : [];
 
-  return repository && (
+  return (
     <FlatList
       data={reviewNodes}
       renderItem={({ item }) => <ReviewItem review={item} />}
@@ -112,6 +110,24 @@ const SingleRepository = () => {
         </View>
       )}
       ItemSeparatorComponent={ItemSeparator}
+      onEndReached={onEndReach}
+      onEndReachedThreshold={0.5}
+    />
+  );
+}
+
+const SingleRepository = () => {
+  const id = useParams().id;
+  const { repository, fetchMore } = useRepository({ repositoryId: id, first: 2 });
+
+  const onEndReach = () => {
+    fetchMore();
+  };
+
+  return (
+    <SingleRepositoryContainer
+      repository={repository}
+      onEndReach={onEndReach}
     />
   );
 };

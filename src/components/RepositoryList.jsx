@@ -44,7 +44,12 @@ const RepositoryItemPressable = ({ item, onPress }) => {
   );
 };
 
-export const RepositoryListContainer = ({ repositories, sortRepositories, searchRepositories }) => {
+export const RepositoryListContainer = ({
+  repositories,
+  onEndReach,
+  sortRepositories,
+  searchRepositories
+}) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [debouncedSearchQuery] = useDebounce(debouncedSearchQuery, 500);
   const [sort, setSort] = useState({
@@ -102,16 +107,32 @@ export const RepositoryListContainer = ({ repositories, sortRepositories, search
           </Picker>
         </View>
       }
+      onEndReached={onEndReach}
+      onEndReachedThreshold={0.5}
     />
   );
 };
 
 const RepositoryList = () => {
-  const { repositories, sortRepositories, searchRepositories } = useRepositories({...sortMap['latest'], searchKeyword: ''});
+  const {
+    repositories,
+    fetchMore,
+    sortRepositories,
+    searchRepositories
+  } = useRepositories({
+    ...sortMap['latest'],
+    searchKeyword: '',
+    first: 4,
+  });
+
+  const onEndReach = () => {
+    fetchMore();
+  };
 
   return (
     <RepositoryListContainer
       repositories={repositories}
+      onEndReach={onEndReach}
       sortRepositories={sortRepositories}
       searchRepositories={searchRepositories}
     />
