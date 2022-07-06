@@ -77,6 +77,31 @@ export const GET_REPOSITORY = gql`
   }
 `;
 
+export const GET_MY_REVIEWS = gql`
+  query ($first: Int, $after: String)  {
+    me {
+      reviews(first: $first, after: $after) {
+        totalCount
+        pageInfo {
+          hasNextPage
+          startCursor
+          endCursor
+        }
+        edges {
+          cursor
+          node {
+            id
+            repositoryId
+            rating
+            createdAt
+            text
+          }
+        }
+      }
+    }
+  }
+`;
+
 export const ME = gql`
   query {
     me {

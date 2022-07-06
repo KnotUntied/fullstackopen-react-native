@@ -3,8 +3,7 @@ import { useParams } from "react-router-dom";
 import Text from './Text';
 import * as Linking from 'expo-linking';
 import RepositoryItem from './RepositoryItem';
-
-import { format } from 'date-fns'
+import ReviewItem from './ReviewItem';
 
 import useRepository from '../hooks/useRepository';
 
@@ -38,27 +37,6 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     textAlign: 'center',
   },
-  item: {
-    backgroundColor: 'white',
-    padding: 16,
-  },
-  reviewRatingContainer: {
-    borderRadius: 24,
-    borderWidth: 2,
-    borderColor: theme.colors.primary,
-    justifyContent: 'center',
-    marginRight: 16,
-    width: 48,
-    height: 48,
-  },
-  reviewRating: {
-    color: theme.colors.primary,
-    fontWeight: theme.fontWeights.bold,
-    textAlign: 'center',
-  },
-  elem: {
-    marginBottom: 8,
-  }
 });
 
 const ItemSeparator = () => <View style={styles.separator} />;
@@ -76,23 +54,6 @@ const RepositoryInfo = ({ repository }) => {
   );
 };
 
-const ReviewItem = ({ review }) => {
-  return (
-    <View style={styles.item} testID="reviewItem">
-      <View style={styles.rowContainer}>
-        <View style={styles.reviewRatingContainer}>
-          <Text style={styles.reviewRating} color="primary" fontWeight="bold">{review.rating}</Text>
-        </View>
-        <View style={styles.container}>
-          <Text style={styles.elem} fontSize="subheading" fontWeight="bold">{review.user.username}</Text>
-          <Text style={styles.elem} color="textSecondary">{format(new Date(review.createdAt), 'dd.MM.yy')}</Text>
-          <Text style={styles.elem}>{review.text}</Text>
-        </View>
-      </View>
-    </View>
-  );
-};
-
 export const SingleRepositoryContainer = ({ repository, onEndReach }) => {
   const reviewNodes = repository && repository.reviews
     ? repository.reviews.edges.map(edge => edge.node)
@@ -101,7 +62,7 @@ export const SingleRepositoryContainer = ({ repository, onEndReach }) => {
   return (
     <FlatList
       data={reviewNodes}
-      renderItem={({ item }) => <ReviewItem review={item} />}
+      renderItem={({ item }) => <ReviewItem item={item} />}
       keyExtractor={({ id }) => id}
       ListHeaderComponent={() => (
         <View>
