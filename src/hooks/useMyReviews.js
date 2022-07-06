@@ -3,7 +3,7 @@ import { useQuery } from '@apollo/client';
 import { GET_MY_REVIEWS } from '../graphql/queries';
 
 const useMyReviews = (variables) => {
-  const { loading, data, fetchMore, ...result } = useQuery(GET_MY_REVIEWS, {
+  const { loading, data, fetchMore, refetch, ...result } = useQuery(GET_MY_REVIEWS, {
     variables,
     fetchPolicy: 'network-only',
   });
@@ -27,6 +27,7 @@ const useMyReviews = (variables) => {
     reviews: data?.me.reviews,
     fetchMore: handleFetchMore,
     loading,
+    refetch,
     ...result
   };
 };

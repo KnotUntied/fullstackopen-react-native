@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native';
+import { Alert, Pressable, StyleSheet, View } from 'react-native';
 import Text from './Text';
 
 import { format } from 'date-fns'
@@ -38,10 +38,40 @@ const styles = StyleSheet.create({
   },
   elem: {
     marginBottom: 8,
-  }
+  },
+  button: {
+    backgroundColor: theme.colors.primary,
+    color: 'white',
+    marginTop: 8,
+    paddingLeft: 16,
+    paddingRight: 16,
+    paddingTop: 8,
+    paddingBottom: 8,
+    borderRadius: 4,
+    textAlign: 'center',
+  },
 });
 
-const ReviewItem = ({ item, parentType = 'repository' }) => {
+const ReviewItem = ({ item, parentType='repository', viewRepository=null, deleteReview=null }) => {
+  const createDeleteAlert = () =>
+    Alert.alert(
+      'Delete review',
+      'Are you sure you want to delete this review?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel'
+        },
+        {
+          text: 'Delete',
+          onPress: () => deleteReview(item.id)
+        }
+      ],
+      {
+        cancelable: true,
+      }
+    );
+
   return (
     <View style={styles.item} testID="reviewItem">
       <View style={styles.rowContainer}>
@@ -56,6 +86,16 @@ const ReviewItem = ({ item, parentType = 'repository' }) => {
           <Text style={styles.elem}>{item.text}</Text>
         </View>
       </View>
+      {parentType === 'user' && (
+      <View style={styles.rowContainer}>
+        <Pressable onPress={() => viewRepository(item.repositoryId)} style={{ zIndex: 0.5, marginRight: 8, flex: 1 }}>
+          <Text style={styles.button} fontWeight='bold'>View repository</Text>
+        </Pressable>
+        <Pressable onPress={createDeleteAlert} style={{ zIndex: 0.5, marginLeft: 8, flex: 1 }}>
+          <Text style={[styles.button, { backgroundColor: theme.colors.red }]} fontWeight='bold'>Delete review</Text>
+        </Pressable>
+      </View>
+      )}
     </View>
   );
 };

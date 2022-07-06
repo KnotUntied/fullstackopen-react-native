@@ -2,6 +2,8 @@ import { FlatList, StyleSheet, View } from 'react-native';
 import ReviewItem from './ReviewItem';
 
 import useMyReviews from '../hooks/useMyReviews';
+import { useNavigate } from "react-router-dom";
+import useDeleteReview from '../hooks/useDeleteReview';
 
 const styles = StyleSheet.create({
   separator: {
@@ -11,7 +13,7 @@ const styles = StyleSheet.create({
 
 const ItemSeparator = () => <View style={styles.separator} />;
 
-export const ReviewListContainer = ({ reviews, onEndReach }) => {
+export const ReviewListContainer = ({ reviews, onEndReach, viewRepository, deleteReview }) => {
   const reviewNodes = reviews
     ? reviews.edges.map(edge => edge.node)
     : [];
@@ -23,6 +25,8 @@ export const ReviewListContainer = ({ reviews, onEndReach }) => {
         <ReviewItem
           item={item}
           parentType="user"
+          viewRepository={viewRepository}
+          deleteReview={deleteReview}
         />
       )}
       keyExtractor={item => item.id}
@@ -34,16 +38,29 @@ export const ReviewListContainer = ({ reviews, onEndReach }) => {
 };
 
 const ReviewList = () => {
-  const { reviews, fetchMore } = useMyReviews({ first: 5 });
+  const { reviews, fetchMore, refetch } = useMyReviews({ first: 5 });
+  const navigate = useNavigate();
+  const [deleteReview] = useDeleteReview();
 
   const onEndReach = () => {
     fetchMore();
   };
 
+  const viewRepository = repositoryId => {
+    navigate(`/repositories/${repositoryId}`);
+  }
+
+  const deleteReviewAndRefetch = reviewId => {
+    deleteReview(reviewId);
+    refetch();
+  }
+
   return (
     <ReviewListContainer
       reviews={reviews}
       onEndReach={onEndReach}
+      viewRepository={viewRepository}
+      deleteReview={deleteReviewAndRefetch}
     />
   );
 };
